@@ -6,15 +6,17 @@ int main() {
        char coluna[10] = {'A', 'B','C','D', 'E', 'F', 'G', 'H', 'I', 'J'};
 
     //estrutura para imprimir 1 barco na horizontal
-        for(int i = 3; i <= 3; i++){//move a coluna
-            for(int j = 3; j < 6; j++)// move a linha
+        for(int i = 3; i <= 3; i++){//move a linha
+            for(int j = 2; j < 5; j++){// move a coluna
                 tabuleiro[i][j] = 3;
+            }
             }
     
     //estrutura para imprimir barco na vertical
             for(int i = 5; i < 8; i++){//move a linha
-                for(int j = 8; j <= 8; j++)//move a coluna
+                for(int j = 8; j <= 8; j++){//move a coluna
                     tabuleiro[i][j] = 3;
+                }
             }
 
             
