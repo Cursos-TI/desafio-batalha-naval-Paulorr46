@@ -6,16 +6,20 @@ int main() {
        char coluna[10] = {'A', 'B','C','D', 'E', 'F', 'G', 'H', 'I', 'J'};
 
     //estrutura para imprimir 1 barco na horizontal
-        for(int i = 3; i <= 3; i++){
-            for(int j = 3; j < 6; j++)
+        for(int i = 3; i <= 3; i++){//move a coluna
+            for(int j = 3; j < 6; j++)// move a linha
                 tabuleiro[i][j] = 3;
             }
     
     //estrutura para imprimir barco na vertical
+            for(int i = 5; i < 8; i++){//move a linha
+                for(int j = 8; j <= 8; j++)//move a coluna
+                    tabuleiro[i][j] = 3;
+            }
 
             
     //inicio da lógica do jogo
-       printf("TABULEIRO BATALHA NAVAL \n");  
+       printf("TABULEIRO BATALHA NAVAL \n");
        printf("   ");//espaço para alinha as colunas de A - J
             for(int i = 0; i < 10; i++){//imprimi a linha de 'A' a 'J'
                 printf("%c ", coluna[i]);
