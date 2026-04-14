@@ -5,23 +5,24 @@ int main() {
        int linha[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
        char coluna[10] = {'A', 'B','C','D', 'E', 'F', 'G', 'H', 'I', 'J'};
 
-    //estrutura para imprimir 1 barco na horizontal
+    //estrutura para imprimir 1 barco na horizontal C5 - D5 - E5
         for(int i = 4; i <= 4; i++){//move a linha
             for(int j = 2; j < 5; j++){// move a coluna
                 tabuleiro[i][j] = 3;
             }
             }
     
-    //estrutura para imprimir barco na vertical
+    //estrutura para imprimir barco na vertical I7 - I8 - I9
             for(int i = 6; i < 9; i++){//move a linha
                 for(int j = 8; j <= 8; j++){//move a coluna
                     tabuleiro[i][j] = 3;
                 }
             }
-            // Barco Diagonal secundária
+            // Barco Diagonal principal A1 - B2 - C3
                for(int i = 0; i < 3; i++){//move a linha
                     tabuleiro[i][i] = 3;
             }
+            //Barco Diagonal secundária J1 - I2 - H3
                 for(int i = 0; i < 3; i++){//move a linha
                     tabuleiro[i][9-i] = 3;
                 
