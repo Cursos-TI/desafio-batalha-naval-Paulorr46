@@ -1,51 +1,86 @@
 #include <stdio.h>
- 
+#include <stdlib.h>
+#define TAM 10
+#define TAM_H 5
+
+// Função que sobrepõe qualquer habilidade ao tabuleiro
+void sobreporHabilidade(int tabuleiro[TAM][TAM], int habilidade[TAM_H][TAM_H], int origemI, int origemJ) {
+    int raio = TAM_H / 2;
+    for (int i = 0; i < TAM_H; i++) {
+        for (int j = 0; j < TAM_H; j++) {
+            int ti = origemI + (i - raio);
+            int tj = origemJ + (j - raio);
+            if (ti >= 0 && ti < TAM &&
+                tj >= 0 && tj < TAM &&
+                habilidade[i][j] == 1 &&
+                tabuleiro[ti][tj] != 3) {
+                tabuleiro[ti][tj] = 5;
+            }
+        }
+    }
+}
+
 int main() {
-       int tabuleiro[10][10] = {0};
-       int linha[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-       char coluna[10] = {'A', 'B','C','D', 'E', 'F', 'G', 'H', 'I', 'J'};
+    int tabuleiro[TAM][TAM] = {0};
+    int linha[TAM]  = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    char coluna[TAM] = {'A','B','C','D','E','F','G','H','I','J'};
 
-    //estrutura para imprimir 1 barco na horizontal C5 - D5 - E5
-        for(int i = 4; i <= 4; i++){//move a linha
-            for(int j = 2; j < 5; j++){// move a coluna
-                tabuleiro[i][j] = 3;
-            }
-            }
-    
-    //estrutura para imprimir barco na vertical I7 - I8 - I9
-            for(int i = 6; i < 9; i++){//move a linha
-                for(int j = 8; j <= 8; j++){//move a coluna
-                    tabuleiro[i][j] = 3;
-                }
-            }
-            // Barco Diagonal principal A1 - B2 - C3
-               for(int i = 0; i < 3; i++){//move a linha
-                    tabuleiro[i][i] = 3;
-            }
-            //Barco Diagonal secundária J1 - I2 - H3
-                for(int i = 0; i < 3; i++){//move a linha
-                    tabuleiro[i][9-i] = 3;
-                
-            }
+    // =====================
+    // NAVIOS
+    // =====================
 
-            
-    //inicio da lógica do jogo
-       printf("TABULEIRO BATALHA NAVAL \n");
-       printf("   ");//espaço para alinhar as colunas de A - J
-            for(int i = 0; i < 10; i++){//imprimi as colunas de 'A' a 'J'
-                printf("%c ", coluna[i]);
-           }
-                printf("\n");//pula uma linha
-           //inicio da lógica para as linhas
-            for(int i = 0; i < 10; i++){//pula linha entre colunas
-                printf("%2d ", linha[i]);//%2d garante que os numeros de 1 digito de cada linha ocupem espaço igual ao 10 para alinhar tudo;
-               
-            for(int j = 0; j < 10; j++){
-                printf("%d ", tabuleiro[i][j]);//imprimi o tabuleiro inteiro
-                }
-                printf("\n");
-            }
-   
+    for (int j = 2; j < 5; j++)  tabuleiro[4][j] = 3;  // horizontal C5-E5
+    for (int i = 6; i < 9; i++)  tabuleiro[i][8] = 3;  // vertical   I7-I9
+    for (int i = 0; i < 3; i++)  tabuleiro[i][i] = 3;  // diagonal principal
+    for (int i = 0; i < 3; i++)  tabuleiro[i][9-i] = 3; // diagonal secundária
+
+    // =====================
+    // HABILIDADES
+    // =====================
+
+    int cone[TAM_H][TAM_H]     = {0};
+    int cruz[TAM_H][TAM_H]     = {0};
+    int octaedro[TAM_H][TAM_H] = {0};
+
+    for (int i = 0; i < TAM_H; i++) {
+        for (int j = 0; j < TAM_H; j++) {
+            // Cone: expande a partir do topo
+            if (j >= (TAM_H/2 - i) && j <= (TAM_H/2 + i))
+                cone[i][j] = 1;
+            // Cruz: linha e coluna do meio
+            if (i == TAM_H/2 || j == TAM_H/2)
+                cruz[i][j] = 1;
+            // Octaedro: distância de Manhattan <= raio
+            if (abs(i - TAM_H/2) + abs(j - TAM_H/2) <= TAM_H/2)
+                octaedro[i][j] = 1;
+        }
+    }
+
+    // Sobrepõe as 3 habilidades com 1 função
+    sobreporHabilidade(tabuleiro, cone,     2, 4);  // E3
+    sobreporHabilidade(tabuleiro, cruz,     7, 4);  // E8
+    sobreporHabilidade(tabuleiro, octaedro, 4, 7);  // H5
+
+    // =====================
+    // EXIBIR TABULEIRO
+    // =====================
+
+    printf("TABULEIRO BATALHA NAVAL\n\n");
+    printf("   ");
+    for (int i = 0; i < TAM; i++) printf("%c ", coluna[i]);
+    printf("\n");
+
+    for (int i = 0; i < TAM; i++) {
+        printf("%2d ", linha[i]);
+        for (int j = 0; j < TAM; j++) {
+            if      (tabuleiro[i][j] == 3) printf("3 ");
+            else if (tabuleiro[i][j] == 5) printf("5 ");
+            else                           printf("0 ");
+        }
+        printf("\n");
+    }
+
+    printf("\nLegenda:  0 agua  |  3 navio  |  5 habilidade\n");
 
     return 0;
 }
